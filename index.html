@@ -18,6 +18,7 @@
     .year-padder { height: calc(var(--rPx)*1.5); }
     .year-indicator { display: flex; justify-content: left; width: fit-content;}
     .year-label { font-size: calc(var(--rPx)*5); color: #6B6B6B;}
+    .age-label { font-size: calc(var(--rPx)*5); color: #6B6B6B;}
     .week-padder { width: calc(var(--rPx)*1.5); }
 
     .week-indicator { width: calc(var(--rPx)*7); height: calc(var(--rPx)*7); }
@@ -74,9 +75,10 @@
     <div style="height: 20px;"></div>
     <details id="customize-form">
         <summary>상세 설정</summary> 
+        <input id="show-year-label" type="checkbox" onchange="drawLife()" checked /> <label for="show-year-label">년도 표시</label> 
+        <input id="show-age-label" type="checkbox" onchange="drawLife()" /> <label for="show-year-label">나이 표시</label> 
         <input id="show-new-year" type="checkbox" onchange="drawLife()" /> <label for="show-new-year">신년 표시</label> <br/> 
         <input id="show-new-month" type="checkbox" onchange="drawLife()" checked/> <label for="show-new-month">신월 표시</label> <br/> 
-        <input id="show-year-label" type="checkbox" onchange="drawLife()" checked /> <label for="show-year-label">년도 표시</label> 
     </details>
     <div style="height: 20px;"></div>
     <details id="story">
@@ -160,6 +162,7 @@
         let thisWeekLastDay = new Date(thisWeekFirstDay);
         thisWeekLastDay.setDate(thisWeekLastDay.getDate() + 6);
         let isPastWeek = false; let isCurrentWeek = false;
+        let age = thisWeekLastDay.getFullYear() - refThursday.getFullYear();
 
         let nowDate = new Date();nowDate.setHours(0);nowDate.setMinutes(0);nowDate.setSeconds(0);nowDate.setMilliseconds(0);
         isPastWeek = thisWeekLastDay < nowDate;
@@ -168,11 +171,11 @@
         let firstWeekOfYear = (thisWeekFirstDay.getMonth() === 0 && thisWeekFirstDay.getDate() === 1)
                                 || thisWeekFirstDay.getFullYear() != thisWeekLastDay.getFullYear();
 
-        return {    year, week, 
+        return {    year, week, age, 
             "firstDate":thisWeekFirstDay, "lastDate":thisWeekLastDay,
             "pastWeek": isPastWeek, "currentWeek": isCurrentWeek, 
             "firstWeekOfMonth": firstWeekOfMonth,
-            "firstWeekOfYear":firstWeekOfYear 
+            "firstWeekOfYear":firstWeekOfYear,
         }
     }
     const createLifeDataMock = (birthStr) =>{
@@ -188,7 +191,7 @@
         return years;
     }
 
-    const drawLifeIndicators = (elementId, lifeData, showYearLabel, showNewYear, showNewMonth) =>{
+    const drawLifeIndicators = (elementId, lifeData, showYearLabel, showAgeLabel, showNewYear, showNewMonth) =>{
         let years = lifeData;
         let lifeIndicator = document.createElement("div");
         lifeIndicator.className = "life-indicator";
@@ -227,6 +230,16 @@
                 description.innerText = JSON.stringify(weekData);
                 weekIndicator.appendChild(description);
                 yearIndicator.appendChild(weekIndicator);
+
+                if(showAgeLabel && weekNum === 51){
+                    let padder = document.createElement("div");
+                    padder.className = "week-padder";
+                    yearIndicator.appendChild(padder);
+                    let yearLabel = document.createElement("div");
+                    yearLabel.className = "age-label";
+                    yearLabel.innerText = String(weekData.age).padStart(3,' ');
+                    yearIndicator.appendChild(yearLabel);
+                }
             })
             let padder = document.createElement("div");
             padder.className = "year-padder";
@@ -245,8 +258,9 @@
         // let highlightYearMonth = document.getElementById("highlight-yearmonth").checked;
         let showNewYear =  document.getElementById("show-new-year").checked;
         let showNewMonth =  document.getElementById("show-new-month").checked;
-        let showYear = document.getElementById("show-year-label").checked;
-        drawLifeIndicators("Life", lifeData, showYear, showNewYear, showNewMonth);
+        let showYearLabel = document.getElementById("show-year-label").checked;
+        let showAgeLabel = document.getElementById("show-age-label").checked;
+        drawLifeIndicators("Life", lifeData, showYearLabel, showAgeLabel, showNewYear, showNewMonth);
     }
 
     // drawLife()
