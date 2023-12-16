@@ -1,0 +1,188 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+    * {padding: 0; margin: 0; box-sizing: border-box;}
+    img { display: block; margin: 0;}
+    :root {--rPx: 1px;}
+
+    .life-indicator { margin-inline: auto;}
+    .year-padder { height: calc(var(--rPx)*1.5); }
+    .year-indicator { display: flex; justify-content: center;}
+    .week-padder { width: calc(var(--rPx)*1.5); }
+    .week-indicator {background: #D9D9D9; width: calc(var(--rPx)*7); height: calc(var(--rPx)*7); border-radius: calc(var(--rPx)*3.5);}
+    .week-indicator.past {background: #6B6B6B;}
+    .week-indicator.current {background: green;}
+    .week-indicator.future {background: #D9D9D9;}
+
+    #page-title { font-size: 64px; text-align: center;}
+    #page-desc-1 { text-align: center;}
+    #birth-blank { margin-inline: auto; text-align: center; }
+    #Life { margin-inline: auto; }
+    #story { margin-inline: auto; width: fit-content; text-align: center; color: #1E1E1E;}
+    #story summary { margin-inline: auto; width: fit-content; color: #808080; }
+    #contact { margin-inline: auto; width: fit-content; text-align: center; color: #1E1E1E;}
+    #contact summary { margin-inline: auto; width: fit-content; color: #808080; }
+    #openchat { text-align: center; margin-inline: auto;  width: fit-content; color: #808080; }
+    #openchat a { text-align: center; margin-inline: auto;  width: fit-content; color: #808080; }
+
+    </style>
+</head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KCWE98HBVF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KCWE98HBVF');
+</script>
+<body>
+    <div style="height: 48px;"></div>
+    <h1 id="page-title"> 5,200 Week</h1>
+    <div style="height: 20px;"></div>
+    <div id="page-desc-1"> 각 점은 한 주차를 의미합니다.<br/> 각 줄은 52개의 점들로 한 해를 의미합니다. <br/> 총 100줄(5,200개의 점)은 100년을 담고 있습니다.</div>
+    <div style="height: 20px;"></div>
+    <div id="birth-blank"> Enter your birthday: <input id="birth-input" type="date" placeholder="2000-10-21" onchange="drawLife()"/> </div>
+    <div style="height: 20px;"></div>
+    <div id="Life"> </div>
+    <div style="height: 20px;"></div>
+    <details id="story">
+        <summary>어떤 의미가 있나요?</summary>
+        <div style="height: 12px;"></div>
+        <div style="font-size: 18px;"><span style="font-weight: bold;">더욱 의미있는 당신의 삶</span>을 응원합니다.</div>
+        <div style="height: 8px;"></div>
+        <p>
+            현대 사회에서는 너무나도 신경 쓸 것들이 많습니다.<br/>
+            그러다 보니, 정작 스스로의 행복에는 소홀해지더군요.<br/>
+            이 서비스를 이용하는 동안에는,<br/>
+            <span style="font-weight: bold;">나의 행복과 내 삶의 의미</span>에 집중해 보아요.<br/>
+            <br/>
+            방법은 어렵지 않아요.<br/>
+            <br/>
+            <span style="font-weight: bold;">일단은 생일을 입력해 보세요.</span><br/>
+            얼마나 많은 시간을 지나쳐 왔는지,<br/>
+            얼마나 많은 시간이 남았는지<br/>
+            한 눈으로 확인할 수 있을 거예요.<br/>
+            <br/>
+            <span style="font-weight: bold;">다음으로는 기억과 꿈들을 투영해봐요.</span><br/>
+            가장 좋았던 기억들, 이루고 싶은 꿈들을<br/>
+            52,00개의 점들에 투영해봐요.<br/>
+            <br/>
+            <span style="font-weight: bold;">당신의 행복과 의미에 가까워진 것을 느끼셨나요?</span><br/>
+            <br/>
+            만약, 당신의 점들을 더욱 의미있게 관리하고 싶다면<br/>
+            업데이트 소식받기를 신청해주세요!<br/>
+            <br/>
+            힘내서 기능을 추가하고, 소식을 전달해 드릴게요.<br/>
+            끝까지 읽어주셔서 감사하고, 좋은 하루 보내길 바라요.<br/>
+            <div style="height: 12px;"></div>
+        </p>
+    </details>
+    <div style="height: 16px;"></div>
+    <details id="contact">
+        <summary>업데이트 소식 받기</summary>
+        <div style="height: 12px;"></div>
+        <p>로그인과 함께 <br>
+           - 각 점들에 메모를 남기는 기능 <br>
+           - 색상을 지정하는 기능<br>
+           을 추가하는 작업을 진행하고 있어요.</p>
+        <p>이 기능이 완성되기 위해서는 여러분들의 응원이 필요합니다.</p>
+        <div style="height: 12px;"></div>
+        <iframe
+            src="https://docs.google.com/forms/d/e/1FAIpQLScZ8wzQWbzfIuKPN7S3vat1rMfRrW0zafmrVy26vPCh1xd2tA/viewform?embedded=true"
+            width="500" height="720" frameborder="0" marginheight="0" marginwidth="0">로드 중…</iframe>
+    </details>
+    <div style="height: 16px;"></div>
+    <p id="openchat"><a href="https://open.kakao.com/o/sTtwk5Xf">익명으로 문의하기</a></p>
+
+    <div style="display: none;">
+        <div id="page-tail">
+            <a href="https://www.youtube.com/watch?v=uljTEmmCh_E">이 영상</a>을 통해 영감을 받은 개발자에 의해 제작되었습니다.<br />
+            당신의 삶을 되돌아보고 계획할 수 있도록 더욱 많은 기능들을 추가하겠습니다. <br />
+        </div>
+        <div id="contact">모든 피드백/요청사항/장난스러운 연락에 대해 환영합니다. </div>
+        <pre>
+        &lt;todo&gt; 
+        -. 개인화 기능
+        --. 로그인 기능
+        --. 각 주차별로 메모를 하고 색상을 지정하는 기능
+        --. 배경화면을 변경하는 기능
+
+        &lt;history&gt; 
+        23.12.15. MVP 제작
+        </pre>
+    </div> 
+    <div style="height: 20px;"></div>
+</body>
+<script type="text/javascript">
+    // SetDesigneVariable
+    const setRPx = () => {document.documentElement.style.setProperty('--rPx', `${Math.min(window.innerWidth, 600) / 375}px`);};setRPx();window.addEventListener('load', setRPx);window.addEventListener('resize', setRPx);
+    const calcWeek = (refDate, year, week) => {
+        let refThursday = new Date(refDate);
+        refThursday.setDate(refThursday.getDate() - refThursday.getDay()+4);
+        let thisWeekThursday = new Date(refThursday); 
+        thisWeekThursday.setDate(thisWeekThursday.getDate() + year* 52 * 7 + week * 7);
+        let thisWeekFirstDay = new Date(thisWeekThursday);
+        thisWeekFirstDay.setDate(thisWeekFirstDay.getDate() - thisWeekFirstDay.getDay())
+        let thisWeekLastDay = new Date(thisWeekFirstDay);
+        thisWeekLastDay.setDate(thisWeekLastDay.getDate() + 7);
+        let isPastWeek = false; let isCurrentWeek = false;
+        isPastWeek = thisWeekLastDay < new Date();
+        if(!isPastWeek) isCurrentWeek = thisWeekFirstDay < new Date();
+        return {    year, week, "pastWeek": isPastWeek, "currentWeek": isCurrentWeek }
+    }
+    const createLifeDataMock = (birthStr) =>{
+        let years = [];
+        for (let year = 0; year < 100; year++) {
+            let weeks = []; 
+            for (let week = 0; week < 52; week++) {
+                let weekData = calcWeek(birthStr, year, week)
+                weeks.push(weekData);
+            } 
+            years.push(weeks);
+        }
+        return years;
+    }
+    const drawLifeIndicators = (elementId, lifeData) =>{
+        let years = lifeData;
+        let lifeIndicator = document.createElement("div");
+        lifeIndicator.className = "life-indicator";
+        years.forEach((yearData, yearNum) => {
+            let weeks = yearData;
+            let yearIndicator = document.createElement("div");
+            yearIndicator.id = "y" + yearNum;
+            yearIndicator.className = "year-indicator";
+            weeks.forEach((weekData, weekNum) => {
+                let padder = document.createElement("div");
+                padder.className = "week-padder";
+                yearIndicator.appendChild(padder);
+                let weekIndicator = document.createElement("div");
+                weekIndicator.id = "y" + yearNum + "w" + weekNum
+                weekIndicator.className = 
+                    weekData.pastWeek? "week-indicator past":
+                    weekData.currentWeek? "week-indicator current":
+                    weekData.status == "future"? "week-indicator future":
+                    "week-indicator";
+                yearIndicator.appendChild(weekIndicator);
+            })
+            let padder = document.createElement("div");
+            padder.className = "year-padder";
+            lifeIndicator.appendChild(padder);
+            lifeIndicator.appendChild(yearIndicator);
+        })
+        let life = document.getElementById(elementId);
+        life.removeChild(life.lastChild);
+        life.appendChild(lifeIndicator);
+    }
+
+
+    const drawLife = () =>{
+        let birthString = document.getElementById("birth-input").value; 
+        let lifeData = createLifeDataMock(birthString);
+        drawLifeIndicators("Life", lifeData);
+    }
+
+</script>
+</html>
