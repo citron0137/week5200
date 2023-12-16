@@ -12,19 +12,39 @@
     img { display: block; margin: 0;}
     :root {--rPx: 1px;}
 
-    .life-indicator { margin-inline: auto;}
+    .display_none {display: none;}
+
+    .life-indicator { margin-inline: auto; width: fit-content;}
     .year-padder { height: calc(var(--rPx)*1.5); }
-    .year-indicator { display: flex; justify-content: center;}
+    .year-indicator { display: flex; justify-content: left; width: fit-content;}
+    .year-label { font-size: calc(var(--rPx)*5); color: #6B6B6B;}
     .week-padder { width: calc(var(--rPx)*1.5); }
-    .week-indicator {background: #D9D9D9; width: calc(var(--rPx)*7); height: calc(var(--rPx)*7); border-radius: calc(var(--rPx)*3.5);}
-    .week-indicator.past {background: #6B6B6B;}
-    .week-indicator.current {background: green;}
-    .week-indicator.future {background: #D9D9D9;}
+
+    .week-indicator { width: calc(var(--rPx)*7); height: calc(var(--rPx)*7); }
+    .week-indicator .inner-circle {background: #D9D9D9; width: calc(var(--rPx)*5); height: calc(var(--rPx)*5);border-radius: calc(var(--rPx)*2.5);}
+    .week-indicator .inner-circle.big {background: #D9D9D9; width: calc(var(--rPx)*6); height: calc(var(--rPx)*6);border-radius: calc(var(--rPx)*3);}
+    .week-indicator .inner-circle.double {
+        background: none; border: #D9D9D9 1px solid; 
+        width: calc(var(--rPx)*7); 
+        height: calc(var(--rPx)*7);
+        border-radius: calc(var(--rPx)*3.5);
+    }
+
+    .week-indicator.past    .inner-circle {background: #6B6B6B;}
+    .week-indicator.past    .inner-circle.double {background: none; border-color: #6B6B6B;}
+    .week-indicator.current .inner-circle {background: green;}
+    .week-indicator.current .inner-circle.double {background: none;border-color: green;}
+    .week-indicator.future  .inner-circle {background: #D9D9D9;}
+    .week-indicator.future  .inner-circle.double {background: none;border-color: #D9D9D9;}
 
     #page-title { font-size: 64px; text-align: center;}
     #page-desc-1 { text-align: center;}
     #birth-blank { margin-inline: auto; text-align: center; }
+
     #Life { margin-inline: auto; }
+    #customize-form { margin-inline: auto; width: fit-content; text-align: center; color: #1E1E1E;}
+    #customize-form summary { margin-inline: auto; width: fit-content; color: #808080; }
+
     #story { margin-inline: auto; width: fit-content; text-align: center; color: #1E1E1E;}
     #story summary { margin-inline: auto; width: fit-content; color: #808080; }
     #contact { margin-inline: auto; width: fit-content; text-align: center; color: #1E1E1E;}
@@ -46,11 +66,18 @@
     <div style="height: 48px;"></div>
     <h1 id="page-title"> 5,200 Week</h1>
     <div style="height: 20px;"></div>
-    <div id="page-desc-1"> 각 점은 한 주차를 의미합니다.<br/> 각 줄은 52개의 점들로 한 해를 의미합니다. <br/> 총 100줄(5,200개의 점)은 100년을 담고 있습니다.</div>
+    <div id="page-desc-1"> 각 점은 한 주차를 의미합니다.<br/> 각 줄은 52개의 점들로 한 해를 의미합니다. <br/> 총 100줄(5,200개의 점)은 약 100년을 담고 있습니다.</div>
     <div style="height: 20px;"></div>
-    <div id="birth-blank"> Enter your birthday: <input id="birth-input" type="date" placeholder="2000-10-21" onchange="drawLife()"/> </div>
+    <div id="birth-blank"> Enter your birthday: <input id="birth-input" type="date" onchange="drawLife()"/> </div>
     <div style="height: 20px;"></div>
     <div id="Life"> </div>
+    <div style="height: 20px;"></div>
+    <details id="customize-form">
+        <summary>상세 설정</summary> 
+        <input id="show-new-year" type="checkbox" onchange="drawLife()" /> <label for="show-new-year">신년 표시</label> <br/> 
+        <input id="show-new-month" type="checkbox" onchange="drawLife()" checked/> <label for="show-new-month">신월 표시</label> <br/> 
+        <input id="show-year-label" type="checkbox" onchange="drawLife()" checked /> <label for="show-year-label">년도 표시</label> 
+    </details>
     <div style="height: 20px;"></div>
     <details id="story">
         <summary>어떤 의미가 있나요?</summary>
@@ -131,15 +158,26 @@
         let thisWeekFirstDay = new Date(thisWeekThursday);
         thisWeekFirstDay.setDate(thisWeekFirstDay.getDate() - thisWeekFirstDay.getDay())
         let thisWeekLastDay = new Date(thisWeekFirstDay);
-        thisWeekLastDay.setDate(thisWeekLastDay.getDate() + 7);
+        thisWeekLastDay.setDate(thisWeekLastDay.getDate() + 6);
         let isPastWeek = false; let isCurrentWeek = false;
-        isPastWeek = thisWeekLastDay < new Date();
-        if(!isPastWeek) isCurrentWeek = thisWeekFirstDay < new Date();
-        return {    year, week, "pastWeek": isPastWeek, "currentWeek": isCurrentWeek }
+
+        let nowDate = new Date();nowDate.setHours(0);nowDate.setMinutes(0);nowDate.setSeconds(0);nowDate.setMilliseconds(0);
+        isPastWeek = thisWeekLastDay < nowDate;
+        if(!isPastWeek) { isCurrentWeek = thisWeekFirstDay <= nowDate}
+        let firstWeekOfMonth = thisWeekFirstDay.getDate() === 1 || thisWeekFirstDay.getMonth() != thisWeekLastDay.getMonth();
+        let firstWeekOfYear = (thisWeekFirstDay.getMonth() === 0 && thisWeekFirstDay.getDate() === 1)
+                                || thisWeekFirstDay.getFullYear() != thisWeekLastDay.getFullYear();
+
+        return {    year, week, 
+            "firstDate":thisWeekFirstDay, "lastDate":thisWeekLastDay,
+            "pastWeek": isPastWeek, "currentWeek": isCurrentWeek, 
+            "firstWeekOfMonth": firstWeekOfMonth,
+            "firstWeekOfYear":firstWeekOfYear 
+        }
     }
     const createLifeDataMock = (birthStr) =>{
         let years = [];
-        for (let year = 0; year < 100; year++) {
+        for (let year = 0; year < 101; year++) {
             let weeks = []; 
             for (let week = 0; week < 52; week++) {
                 let weekData = calcWeek(birthStr, year, week)
@@ -149,7 +187,8 @@
         }
         return years;
     }
-    const drawLifeIndicators = (elementId, lifeData) =>{
+
+    const drawLifeIndicators = (elementId, lifeData, showYearLabel, showNewYear, showNewMonth) =>{
         let years = lifeData;
         let lifeIndicator = document.createElement("div");
         lifeIndicator.className = "life-indicator";
@@ -159,16 +198,34 @@
             yearIndicator.id = "y" + yearNum;
             yearIndicator.className = "year-indicator";
             weeks.forEach((weekData, weekNum) => {
+                if(showYearLabel && weekNum === 0){
+                    let yearLabel = document.createElement("div");
+                    yearLabel.className = "year-label";
+                    yearLabel.innerText = weekData.firstDate.getFullYear()+"-"+String(weekData.firstDate.getMonth()+1).padStart(2,'0');
+                    yearIndicator.appendChild(yearLabel);
+                }
                 let padder = document.createElement("div");
                 padder.className = "week-padder";
                 yearIndicator.appendChild(padder);
+
                 let weekIndicator = document.createElement("div");
                 weekIndicator.id = "y" + yearNum + "w" + weekNum
-                weekIndicator.className = 
+                weekIndicator.className =  
                     weekData.pastWeek? "week-indicator past":
                     weekData.currentWeek? "week-indicator current":
-                    weekData.status == "future"? "week-indicator future":
-                    "week-indicator";
+                    "week-indicator future" 
+                let innerCircle = document.createElement("div");
+                innerCircle.className = "inner-circle";
+                if(showNewYear && weekData.firstWeekOfYear) innerCircle.className = "inner-circle double";
+                if(showNewMonth && weekData.firstWeekOfMonth) innerCircle.className = "inner-circle big";
+                // (!highlightYearMonth)?"inner-circle big":
+                //     weekData.firstWeekOfYear?"inner-circle double":
+                //     weekData.firstWeekOfMonth?"inner-circle big":
+                weekIndicator.appendChild(innerCircle);
+                let description = document.createElement("div");
+                description.className = "display_none"
+                description.innerText = JSON.stringify(weekData);
+                weekIndicator.appendChild(description);
                 yearIndicator.appendChild(weekIndicator);
             })
             let padder = document.createElement("div");
@@ -185,8 +242,13 @@
     const drawLife = () =>{
         let birthString = document.getElementById("birth-input").value; 
         let lifeData = createLifeDataMock(birthString);
-        drawLifeIndicators("Life", lifeData);
+        // let highlightYearMonth = document.getElementById("highlight-yearmonth").checked;
+        let showNewYear =  document.getElementById("show-new-year").checked;
+        let showNewMonth =  document.getElementById("show-new-month").checked;
+        let showYear = document.getElementById("show-year-label").checked;
+        drawLifeIndicators("Life", lifeData, showYear, showNewYear, showNewMonth);
     }
 
+    // drawLife()
 </script>
 </html>
