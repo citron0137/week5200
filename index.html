@@ -216,8 +216,8 @@
                     "week-indicator future" 
                 let innerCircle = document.createElement("div");
                 innerCircle.className = "inner-circle";
-                if(showNewYear && weekData.firstWeekOfYear) innerCircle.className = "inner-circle double";
                 if(showNewMonth && weekData.firstWeekOfMonth) innerCircle.className = "inner-circle big";
+                if(showNewYear && weekData.firstWeekOfYear) innerCircle.className = "inner-circle double";
                 // (!highlightYearMonth)?"inner-circle big":
                 //     weekData.firstWeekOfYear?"inner-circle double":
                 //     weekData.firstWeekOfMonth?"inner-circle big":
